@@ -1,0 +1,12 @@
+"""Punto de entrada WSGI para servidores web y CLI de Flask."""
+from src.app import create_app
+from src.config import Config
+
+app = create_app(Config)
+
+if __name__ == "__main__":
+    app.run(
+        host="0.0.0.0",
+        port=Config.PORT,
+        debug=Config.DEBUG,
+    )
