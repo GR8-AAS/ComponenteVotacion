@@ -11,6 +11,17 @@ registrador = logging.getLogger(__name__)
 api_bp = Blueprint("api_votacion", __name__)
 
 
+@api_bp.route("/", methods=["GET"])
+def inicio():
+    """Ruta raíz para verificar que el servicio está activo desde el navegador."""
+    return jsonify({
+        "servicio": "Componente de Estrategia de Votación",
+        "estado": "activo",
+        "version": "1.0.0",
+        "endpoint_principal": "POST /api/v1/execute (requiere Authorization: Bearer <token>)",
+    }), 200
+
+
 @api_bp.route("/api/v1/execute", methods=["POST"])
 @jwt_required()
 async def ejecutar_votacion():

@@ -36,6 +36,14 @@ def token_autorizacion(aplicacion):
         return {"Authorization": f"Bearer {token}"}
 
 
+def test_inicio_ruta_raiz(cliente):
+    respuesta = cliente.get("/")
+    assert respuesta.status_code == 200
+    datos = respuesta.get_json()
+    assert datos["estado"] == "activo"
+    assert datos["servicio"] == "Componente de Estrategia de Votación"
+
+
 def test_ejecutar_sin_token_retorna_401(cliente):
     respuesta = cliente.post(
         "/api/v1/execute",
