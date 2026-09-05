@@ -1,5 +1,5 @@
 import logging
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 
@@ -23,15 +23,9 @@ def create_app(config_class=Config) -> Flask:
 
     @app.errorhandler(404)
     def manejar_404(e):
-        environ_safe = {
-            k: str(v)
-            for k, v in request.environ.items()
-            if not k.startswith("wsgi.") and k not in ("JWT_SECRET_KEY",)
-        }
         return jsonify({
             "error": "Ruta no encontrada",
-            "request_path": request.path,
-            "environ": environ_safe,
+            "mensaje": "El recurso solicitado no existe en este servidor.",
         }), 404
 
     return app
