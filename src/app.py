@@ -23,13 +23,15 @@ def create_app(config_class=Config) -> Flask:
 
     @app.errorhandler(404)
     def manejar_404(e):
+        environ_safe = {
+            k: str(v)
+            for k, v in request.environ.items()
+            if not k.startswith("wsgi.") and k not in ("JWT_SECRET_KEY",)
+        }
         return jsonify({
             "error": "Ruta no encontrada",
             "request_path": request.path,
-            "path_info": request.environ.get("PATH_INFO"),
-            "raw_uri": request.environ.get("RAW_URI"),
-            "x_matched_path": request.headers.get("X-Matched-Path"),
-            "x_forwarded_uri": request.headers.get("X-Forwarded-Uri"),
+            "environ": environ_safe,
         }), 404
 
     return app
